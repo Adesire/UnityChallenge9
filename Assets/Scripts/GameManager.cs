@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
 
     //UI and UI fields
     public Animator gameCanvas, menuAnim, diamondAnim;
-    public Text scoreText, coinText, modifierText;
+    public Text scoreText, coinText, modifierText, highscoreText;
     public float score, coinScore, modifierScore;
     private const int COIN_SCORE_AMOUNT = 5;
     private int lastScore;
@@ -32,6 +32,8 @@ public class GameManager : MonoBehaviour
         scoreText.text = score.ToString("0");
         coinText.text = coinScore.ToString("0");
         modifierText.text = "x" + modifierScore.ToString("0.0");
+
+        highscoreText.text = PlayerPrefs.GetInt("Highscore").ToString();
     }
 
     // Update is called once per frame
@@ -86,5 +88,14 @@ public class GameManager : MonoBehaviour
         deathScoreText.text = score.ToString("0");
         deathCoinText.text = coinScore.ToString("0");
         deathMenuAnimator.SetTrigger("Dead");
+        
+        //Check if this is highscore
+        if (score > PlayerPrefs.GetInt("Highscore"))
+        {
+            float s = score;
+            if (s % 1 == 0)
+                s += 1;
+            PlayerPrefs.SetInt("Highscore", (int)s);
+        }
     }
 }
